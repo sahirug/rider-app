@@ -1,6 +1,11 @@
 import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { HomePage } from '../home/home';
+
+import { LoginProvider } from '../../providers/login/login';
+
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+
 
 /**
  * Generated class for the LoginPage page.
@@ -65,7 +70,20 @@ import { HomePage } from '../home/home';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  loginForm: FormGroup;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public loginProvider: LoginProvider,
+    public formBuilder: FormBuilder,
+    public loadingController: LoadingController,
+    public alertCtrl: AlertController) {
+
+      this.loginForm = this.formBuilder.group({
+        empID: ['', Validators.required],
+        password: ['', Validators.required]
+      });
   }
 
   ionViewDidLoad() {
@@ -73,7 +91,47 @@ export class LoginPage {
   }
 
   login(){
-    this.navCtrl.setRoot(HomePage);
+    let authenticateLoader = this.loadingController.create({
+      content: 'Authenticating'
+    });
+    authenticateLoader.present();
+    if(this.loginForm.valid){
+      this.loginProvider.login(this.loginForm.value)
+        .subscribe((data) => {
+          let response: any = data;
+          if(response.error == undefined){
+            this.loginProvider.saveToStorage(response.id, response.name);
+            this.navCtrl.setRoot(HomePage);
+          }else{
+            let errorAlert = this.alertCtrl.create({
+              title: 'Error',
+              message: response.error,
+              buttons: [
+                {
+                  text: 'OK'
+                }
+              ]
+            });
+            errorAlert.present();
+          }
+          authenticateLoader.dismiss();
+        }, err => {
+          console.log(err);
+          authenticateLoader.dismiss();
+        });
+    }else{
+      authenticateLoader.dismiss();
+      let missingAlert = this.alertCtrl.create({
+        title: 'Missing fields',
+        message: 'Please complete all fields',
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      });
+      missingAlert.present();
+    }
   }
 
 }

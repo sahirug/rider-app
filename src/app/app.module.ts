@@ -6,12 +6,18 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { IonicStorageModule } from '@ionic/storage';
+
 import { Geolocation } from '@ionic-native/geolocation';
+
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { MapModalPage } from '../pages/map-modal/map-modal';
+import { LoginProvider } from '../providers/login/login';
 
 @NgModule({
   declarations: [
@@ -22,8 +28,10 @@ import { MapModalPage } from '../pages/map-modal/map-modal';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -36,7 +44,8 @@ import { MapModalPage } from '../pages/map-modal/map-modal';
     StatusBar,
     SplashScreen,
     Geolocation,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    LoginProvider
   ]
 })
 export class AppModule {}

@@ -12,15 +12,17 @@
       <ion-col>
         <ion-list inset [@bounceInBottom]="formState">
 
-          <ion-item>
-            <ion-label>EmpID</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
+          <form [formGroup]="loginForm">
+            <ion-item>
+              <ion-label>EmpID</ion-label>
+              <ion-input type="text" formControlName="empID"></ion-input>
+            </ion-item>
 
-          <ion-item>
-            <ion-label>Password</ion-label>
-            <ion-input type="password"></ion-input>
-          </ion-item>
+            <ion-item>
+              <ion-label>Password</ion-label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </ion-item>
+          </form>
 
         </ion-list>
       </ion-col>
