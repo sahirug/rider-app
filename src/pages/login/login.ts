@@ -101,7 +101,9 @@ export class LoginPage {
           let response: any = data;
           if(response.error == undefined){
             this.loginProvider.saveToStorage(response.id, response.name);
-            this.navCtrl.setRoot(HomePage);
+            this.navCtrl.setRoot(HomePage, {
+              empID: this.loginForm.value.empID
+            });
           }else{
             let errorAlert = this.alertCtrl.create({
               title: 'Error',

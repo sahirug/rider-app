@@ -11,10 +11,10 @@
     <ion-list-header>
       <h1>App Deliveries</h1>
     </ion-list-header>
-    <ion-item-sliding>
-      <ion-item style="border: 1px solid red">
-        <h2>Order ID: ORD-CMB-001</h2>
-        <p>Grand Total: 2500.00LKR</p>
+    <ion-item-sliding *ngFor="let order of appOrders">
+      <ion-item style="border: 0px solid red">
+        <h2>Order ID: {{ order.order_id }}</h2>
+        <p>Grand Total: {{ order.tot_cost }} LKR</p>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button color="dark">
@@ -31,10 +31,13 @@
     <ion-list-header>
       <h1>Phone Deliveries</h1>
     </ion-list-header>
-    <ion-item-sliding>
+    <ion-item *ngIf="phoneOrders.length === 0">
+      <h2>No orders</h2>
+    </ion-item>
+    <ion-item-sliding *ngFor="let order of phoneOrders">
       <ion-item>
-        <h2>Order ID: ORD-CMB-001</h2>
-        <p>Grand Total: 2500.00LKR</p>
+        <h2>Order ID: {{ order.order_id }}</h2>
+        <p>Grand Total: {{ order.tot_cost }}LKR</p>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button color="primary">

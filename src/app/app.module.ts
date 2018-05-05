@@ -18,6 +18,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { MapModalPage } from '../pages/map-modal/map-modal';
 import { LoginProvider } from '../providers/login/login';
+import { OrderProvider } from '../providers/order/order';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LoginProvider } from '../providers/login/login';
     SplashScreen,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    LoginProvider
+    LoginProvider,
+    OrderProvider
   ]
 })
 export class AppModule {}
