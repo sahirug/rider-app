@@ -1,8 +1,10 @@
 import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
-import { NavController, ModalController, NavParams } from 'ionic-angular';
+import { NavController, ModalController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { MapModalPage } from '../map-modal/map-modal';
+import { LoginPage } from '../login/login';
 
 import { OrderProvider } from '../../providers/order/order';
+import { LogoutProvider } from '../../providers/logout/logout';
 
 @Component({
   selector: 'page-home',
@@ -18,7 +20,10 @@ export class HomePage {
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
-    public orderProvider: OrderProvider) {
+    public orderProvider: OrderProvider,
+    public logoutProvider: LogoutProvider,
+    public loadingController: LoadingController,
+    public alertCtrl: AlertController) {
 
   }
 
@@ -32,7 +37,9 @@ export class HomePage {
     this.orderProvider.getAppOrders(this.empID)
       .subscribe(data => {
         this.appOrders = data;
-        console.log(this.appOrders);
+        if(this.appOrders.error !== undefined){
+          this.appOrders = [];
+        }
       }, err => {
         console.log(err);
       });
@@ -43,9 +50,7 @@ export class HomePage {
     this.orderProvider.getPhoneOrders(this.empID)
       .subscribe(data => {
         this.phoneOrders = data;
-        console.log(this.phoneOrders.error);
         if(this.phoneOrders.error !== undefined){
-          console.log('undefined');
           this.phoneOrders = [];
         }
       }, err => {
@@ -56,6 +61,51 @@ export class HomePage {
   openMapModal(){
     let mapModal = this.modalCtrl.create(MapModalPage);
     mapModal.present();
+  }
+
+  confirmComplete(orderID, orderType){
+    let confirmAlert  = this.alertCtrl.create({
+      title: 'Complete Order',
+      message: 'Confirm completion of order?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.completeOrder(orderID, orderType);
+          }
+        },
+        {
+          text: 'No'
+        }
+      ]
+    });
+    confirmAlert.present();
+  }
+
+  completeOrder(orderID, orderType){
+    let updateLoader = this.loadingController.create({
+      content: 'Updating'
+    });
+    updateLoader.present();
+    this.orderProvider.completeOrder(orderID, orderType)
+      .subscribe(data => {
+        console.log(data);
+        orderType == 'app' ? this.getAppOrders() : this.getPhoneOrders();
+        updateLoader.dismiss();
+      }, err => {
+        console.log(err);
+        updateLoader.dismiss();
+      });
+  }
+
+  logout(){
+    let logoutLoader = this.loadingController.create({
+      content: 'Logging out'
+    });
+    logoutLoader.present();
+    this.logoutProvider.logout();
+    logoutLoader.dismiss();
+    this.navCtrl.setRoot(LoginPage);
   }
 
 }

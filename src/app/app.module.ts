@@ -19,6 +19,7 @@ import { LoginPage } from '../pages/login/login';
 import { MapModalPage } from '../pages/map-modal/map-modal';
 import { LoginProvider } from '../providers/login/login';
 import { OrderProvider } from '../providers/order/order';
+import { LogoutProvider } from '../providers/logout/logout';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { OrderProvider } from '../providers/order/order';
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginProvider,
-    OrderProvider
+    OrderProvider,
+    LogoutProvider
   ]
 })
 export class AppModule {}

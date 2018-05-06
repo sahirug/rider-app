@@ -42,4 +42,19 @@ export class OrderProvider {
     return this.storage.get('id')
   }
 
+  completeOrder(orderID, orderType){
+    if(orderType == 'app'){
+      return this.http.get('http://localhost/restaurant/api/rider/complete_app_order.php', {
+        params: {
+          order_id: orderID
+        }
+      });
+    }
+    return this.http.get('http://localhost/restaurant/api/rider/complete_phone_order.php', {
+      params: {
+        order_id: orderID
+      }
+    });
+  }
+
 }
