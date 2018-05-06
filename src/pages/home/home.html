@@ -29,11 +29,11 @@
         <p>Grand Total: {{ order.tot_cost }} LKR</p>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="dark">
+        <button ion-button color="dark" (click)="openOrderDetailModal(order.order_id, 'app')">
           <ion-icon name="eye"></ion-icon>
         </button>
-        <button ion-button color="primary">
-          <ion-icon name="navigate" (click)="openMapModal()"></ion-icon>
+        <button ion-button color="primary" (click)="openMapModal(order.order_id, {lat: order.lat, lng: order.lng})">
+          <ion-icon name="navigate"></ion-icon>
         </button>
         <button ion-button color="secondary" (click)="confirmComplete(order.order_id, 'app')">
           <ion-icon name="checkmark"></ion-icon>
@@ -56,6 +56,9 @@
         <p>Grand Total: {{ order.tot_cost }}LKR</p>
       </ion-item>
       <ion-item-options side="right">
+        <button ion-button color="dark" (click)="openOrderDetailModal(order.order_id, 'phone', order.customer_address)">
+          <ion-icon name="eye"></ion-icon>
+        </button>
         <button ion-button color="primary">
           <ion-icon name="call"></ion-icon>
         </button>

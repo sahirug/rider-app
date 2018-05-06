@@ -17,6 +17,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { MapModalPage } from '../pages/map-modal/map-modal';
+import { OrderDetailModalPage } from '../pages/order-detail-modal/order-detail-modal';
 import { LoginProvider } from '../providers/login/login';
 import { OrderProvider } from '../providers/order/order';
 import { LogoutProvider } from '../providers/logout/logout';
@@ -26,7 +27,8 @@ import { LogoutProvider } from '../providers/logout/logout';
     MyApp,
     HomePage,
     LoginPage,
-    MapModalPage
+    MapModalPage,
+    OrderDetailModalPage
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,8 @@ import { LogoutProvider } from '../providers/logout/logout';
     MyApp,
     HomePage,
     LoginPage,
-    MapModalPage
+    MapModalPage,
+    OrderDetailModalPage
   ],
   providers: [
     StatusBar,

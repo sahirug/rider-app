@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -21,16 +21,23 @@ export class MapModalPage {
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
-  start = 'chicago, il';
-  end = 'chicago, il';
+  public destinationLat: any;
+  public destinationLng: any;
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
+
+  public orderID: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    public geolocation: Geolocation) {
+    public geolocation: Geolocation,
+    public loadingController: LoadingController) {
+      this.destinationLat = parseFloat(this.navParams.get('lat'));
+      this.destinationLng = parseFloat(this.navParams.get('lng'));
+      console.log(this.navParams.get('orderID'));
+      this.orderID = this.navParams.get('orderID');
   }
 
   ionViewDidLoad() {
@@ -43,6 +50,10 @@ export class MapModalPage {
   }
 
   initMap() {
+    let locationLoader = this.loadingController.create({
+      content: 'Getting location and mapping route'
+    });
+    locationLoader.present();
     this.geolocation.getCurrentPosition().then((position) => {
       let lat = position.coords.latitude;
       let lng = position.coords.longitude;
@@ -59,13 +70,15 @@ export class MapModalPage {
       });
 
       this.directionsDisplay.setMap(this.map);
+      this.calculateAndDisplayRoute(position);
+      locationLoader.dismiss();
     });
   }
 
-  calculateAndDisplayRoute() {
+  calculateAndDisplayRoute(position) {
     this.directionsService.route({
-      origin: this.start,
-      destination: this.end,
+      origin: {lat: position.coords.latitude, lng: position.coords.longitude},
+      destination: {lat: this.destinationLat, lng: this.destinationLng},
       travelMode: 'DRIVING'
     }, (response, status) => {
       if (status === 'OK') {

@@ -6,13 +6,55 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>OrderDetailModal</ion-title>
+  <ion-navbar color="danger">
+    <ion-title>{{ orderDetails.orderID }}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-grid style="width: 100%">
+    <ion-row justify-content-start>
+      <ion-col col-6>
+        <strong>Meal Name</strong>
+      </ion-col>
+      <ion-col col-2>
+        <strong>Qty</strong>
+      </ion-col>
+      <ion-col col-4>
+        <strong>Sub Total</strong>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-start *ngFor="let meal of meals">
+      <ion-col col-6>
+        {{ meal.name }}
+      </ion-col>
+      <ion-col col-2>
+        {{ meal.qty }}
+      </ion-col>
+      <ion-col col-4>
+        {{ (meal.qty * meal.unit_price) }}
+      </ion-col>
+    </ion-row>
+    <div style="padding-top: 20px" *ngIf="orderDetails.address !== null">
+      <ion-row justify-content-start>
+        <ion-col col-6>
+          <strong>Address</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-start>
+        <ion-col col-12>
+          {{ orderDetails.address !== null ? orderDetails.address : 'NA' }}
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
 
 </ion-content>

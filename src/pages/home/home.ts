@@ -2,6 +2,7 @@ import { Component, trigger, state, style, transition, animate, keyframes } from
 import { NavController, ModalController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { MapModalPage } from '../map-modal/map-modal';
 import { LoginPage } from '../login/login';
+import { OrderDetailModalPage } from '../order-detail-modal/order-detail-modal';
 
 import { OrderProvider } from '../../providers/order/order';
 import { LogoutProvider } from '../../providers/logout/logout';
@@ -58,8 +59,13 @@ export class HomePage {
       });
   }
 
-  openMapModal(){
-    let mapModal = this.modalCtrl.create(MapModalPage);
+  openMapModal(orderID, coords){
+    let orderDetails = {
+      lat: coords.lat,
+      lng: coords.lng,
+      orderID: orderID
+    }
+    let mapModal = this.modalCtrl.create(MapModalPage, orderDetails);
     mapModal.present();
   }
 
@@ -80,6 +86,18 @@ export class HomePage {
       ]
     });
     confirmAlert.present();
+  }
+
+  openOrderDetailModal(orderID, orderType, address = null){
+    let orderDetails = {
+      orderID: orderID,
+      orderType: orderType,
+      address: address
+    };
+    let orderDetailModal = this.modalCtrl.create(OrderDetailModalPage, {
+      orderDetails: orderDetails
+    });
+    orderDetailModal.present();
   }
 
   completeOrder(orderID, orderType){

@@ -57,4 +57,13 @@ export class OrderProvider {
     });
   }
 
+  getMeals(orderID, orderType){
+    return this.http.get('http://localhost/restaurant/api/rider/get_meals.php', {
+      params: {
+        order_id: orderID,
+        order_type: orderType
+      }
+    });
+  }
+
 }
